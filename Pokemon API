@@ -1,0 +1,53 @@
+import requests
+import json
+
+print("welcome to the pokemon dex cli!!!")
+
+pokemonName = input("Which Pokemon do you want to search? ")
+
+data = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemonName}")
+
+
+if data.status_code == 200:
+
+
+    data = json.loads(data.text)
+
+    print(f"You chose {data['name']}")
+
+    action = input("What information would want you like to see?\n (i = info, s = stats)? ")
+
+    if action == "i" or action == "info":
+        print(f"id: {data['id']}")
+        print(f"name: {data['name']}")
+        print(f"height: {data['height']}")
+        print(f"weight: {data['weight']}")
+
+        pokenmonType = ""
+
+        for type in data["types"]:
+
+            if data["types"].index(type) == (len(data["types"]) - 1):
+                pokenmonType += f" {type['type']['name']}"
+            else:
+                pokenmonType += f" {type['type']['name']},"
+
+
+        print(f"type: {pokenmonType}")
+
+    elif action == 's' or action == "stats":
+        print(f"speed: {data['stats'][0]['base_stat']}")
+        print(f"special defense: {data['stats'][1]['base_stat']}")
+        print(f"special attack: {data['stats'][2]['base_stat']}")
+        print(f"Defense: {data['stats'][3]['base_stat']}")
+        print(f"Attack: {data['stats'][4]['base_stat']}")
+        print(f"Hp: {data['stats'][5]['base_stat']}")
+
+    else:
+        print("Sorry we don't recognize that command")
+
+
+else:
+    print("That is not a valid pokenmon")
+i = info
+s = stats,
